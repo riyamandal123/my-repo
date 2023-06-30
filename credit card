@@ -1,0 +1,120 @@
+# credit card 
+import getpass
+import datetime
+
+user_name='harry'
+user_pin='1004'
+branch_code=9753
+Account_no=123456782901
+user_balance=300000
+min_balance=1000
+count_pinattempts=0
+transaction_fee = 0.5
+
+
+name=input("enter the  user name:")
+pin=getpass.getpass("enter the user pin:")
+pin_masked=pin[-1:].rjust(len(pin),'*')
+while True:
+    try:
+        if name == user_name and pin == user_pin:
+            print('''
+                    1.Withdraw.
+                    2.Deposits.
+                    3.Balance.
+                    4.passbok updates.
+                    5.reset pin.
+                    6.Exit. 
+            ''')
+            choice=int(input("select any option:"))
+            
+            ## withdraw money ##
+            if choice == 1:
+                withdraw=int(input("enter the amount you want to withdraw"))
+                if withdraw == 0 or withdraw < min_balance:
+                    print("can't withdraw,less money left!")
+                    
+                elif withdraw < user_balance and (user_balance-withdraw) >= min_balance:
+                    user_balance -=withdraw
+                    user_balance=user_balance-transaction_fee
+                    print(f"amount {withdraw} is withdrawn from your bank account")
+                    print("Transaction Successfull!!")
+                    print(f"balance left are:{user_balance}")
+                    
+                elif withdraw >= user_balance:
+                    print("amount exceeds,account cannot have zero balance")
+                    #break
+                    
+                else:
+                    print("invalid number!!")
+            
+            ## deposits money ##
+            elif choice == 2:
+                amount=int(input("enter the amount to be deposited:"))
+                if amount <=0 :
+                    print("Invalid amount!!")
+                else:
+                    user_balance += amount
+                    print(f"{amount} deposited in your account!!")
+                    print("updated balance", user_balance)
+            ## check the account holder balance ##
+            elif choice == 3:
+                print(f"user balance is {user_balance}")
+             
+            ## Passbook details ##
+            elif choice == 4:
+                #print(date.today()) 
+                now=datetime.datetime.now()
+                print(now.strftime("Date of issue:%d/%m/%Y              %H:%M:%S"))
+                print("Account no:",Account_no,                         "Branch Code:",branch_code)
+                print("Account holder name: ",name)
+                print("Pin number:", pin_masked)
+                print("amount withdrawn:",withdraw)
+                print("Bank charge for each transaction:",transaction_fee)
+                print("user balance:",user_balance)
+                
+            ## if the user want to reset their password ##   
+            elif choice == 5:    
+                print('''Would you like to reset pin!!
+                            1.yes.
+                            2.no.''')
+                select=input("enter a option:")
+                if select == '1':
+                    try:
+                        new_pin=int(input("enter a new pin:"))
+                        confirm_pin=int(input("enter a confirm pin:"))
+                        if new_pin == pin:
+                            print("new pin is same as current pin!!")
+                        elif new_pin != confirm_pin:
+                                print("Both the pins doesn't match,try again!!")
+                        else:
+                            print("pin is successfully resetted!!")
+                                
+                    except:
+                        print("An error occurred,Try again!!")
+                elif select == '2':
+                    pass
+                else:
+                    print("Invalid number!!")
+                    
+            ## if user wants to come out ##
+            elif choice == 6:
+                print("logged out!!")
+                break 
+            else:
+                print("invalid input!!") 
+                
+        # if the user enters wrong pin 3 chances would be given.#
+        elif pin != user_pin:
+            count_pinattempts += 1
+            if count_pinattempts <3:
+                print(f"Incorrect pin!{3-count_pinattempts} attempts left.")
+                pin=input("enter the user pin:")
+        # if he/she fails account gets locked.#
+            else:
+                print("Account locked.Please try again later!!")
+                break
+        
+    except:
+        print("An error occurred. Please try again.")
+        
