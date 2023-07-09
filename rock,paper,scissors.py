@@ -27,7 +27,9 @@ scissors = '''
 import random
 computer=random.randint(0,2)
 user=input("What do you choose? Type 0 for Rock, 1 for Paper, 2 for Scissors :")
-if user == '0':
+if user < 0 and user >= 3:
+    print("INVALID NUMBER")
+elif user == '0':
     print(rock)
     if computer == 0:
         print(rock)
