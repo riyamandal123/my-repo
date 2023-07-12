@@ -16,7 +16,7 @@ def encrypt(plain_text,shift_count):
         cipher_text += new_letter
     print(f"The encode text is {cipher_text}")
 
-#Create a different function called 'decrypt' that takes the 'text' and 'shift' as inputs.
+#Create a function called 'decrypt' that takes the 'text' and 'shift' as inputs.
 def decrypt(cipher_text,shift_count):
     plain_text=""
     for letter in cipher_text:
