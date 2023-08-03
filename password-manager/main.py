@@ -18,19 +18,15 @@ def password_generator():
     password_input.insert(0, Password)
     pyperclip.copy(Password)
 
-
-
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
-    password_generator()
     website = website_input.get()
     email = email_input.get()
     password = password_input.get()
     if len(website) == 0 or len(password) ==0:
         messagebox.showinfo(title="Oops", message="Please don't leave any field empty!")
 
-    else:
+    elif len(password) >= 8:
         #to display the message box before saving the data inside our data_file.
         is_ok = messagebox.askokcancel(title=website, message=f"The details entered as follows: \nEmail: {email}\n"
                                                       f"Password:{password}\nIs it ok to save it?")
@@ -40,6 +36,9 @@ def save_password():
                 website_input.delete(0,END)
                 password_input.delete(0,END)
                 data_file.close()
+
+    else:
+        messagebox.showinfo(title="Oops",message="The length of the password must be 8 or more!")
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
