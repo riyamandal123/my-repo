@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -23,23 +24,48 @@ def save_password():
     website = website_input.get()
     email = email_input.get()
     password = password_input.get()
-    if len(website) == 0 or len(password) ==0:
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
+    if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please don't leave any field empty!")
 
-    elif len(password) >= 8:
-        #to display the message box before saving the data inside our data_file.
-        is_ok = messagebox.askokcancel(title=website, message=f"The details entered as follows: \nEmail: {email}\n"
-                                                      f"Password:{password}\nIs it ok to save it?")
-        if is_ok:
-            with open("data.txt", mode="a") as data_file:
-                data_file.write(f"{website}|{email}|{password}\n")
-                website_input.delete(0,END)
-                password_input.delete(0,END)
-                data_file.close()
+    elif len(password) < 8:
+        messagebox.showinfo(title="Oops", message="Password should be at least 8 characters long!")
 
     else:
-        messagebox.showinfo(title="Oops",message="The length of the password must be 8 or more!")
-
+        try:
+            with open("final_data.json", "r") as data_file:
+                # Reading old data
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("final_data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            # Updating old data with new data
+            data.update(new_data)
+            with open("final_data.json", "w") as data_file:
+                # Saving updated data
+                json.dump(data, data_file, indent=4)
+        finally:
+            website_input.delete(0, END)
+            password_input.delete(0, END)
+#-------------------------SEARCH PASSWORD-------------------------------#
+def search():
+    website = website_input.get()
+    try:
+        with open("final_data.json", mode="r") as data_file:
+            data = json.load(data_file)
+            new_data = data[website]
+    except KeyError:
+        messagebox.showinfo(title="Error",message="No data file found!")
+    else:
+        email = new_data["email"]
+        password = new_data["password"]
+        messagebox.askyesno(title=website, message=f"Email:{email}\nPassword:{password}")
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Generator")
@@ -53,25 +79,27 @@ canvas.grid(column=1, row=0)
 #labels.
 website_label = Label(text="Website:")
 website_label.grid(column=0, row=1)
-website_label.focus()
 email_label = Label(text="Email/Username:")
 email_label.grid(column=0, row=2)
 password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 #Entries.
-website_input = Entry(width=36)
-website_input.grid(column=1, row=1, columnspan=2)
-email_input = Entry(width=36)
+website_input = Entry(width=31)
+website_input.grid(column=1, row=1)
+website_input.focus()
+email_input = Entry(width=49)
 email_input.grid(column=1, row=2, columnspan=2)
 email_input.insert(0, "riya@gmail.com")
-password_input = Entry(width=21)
+password_input = Entry(width=31)
 password_input.grid(column=1, row=3)
 
 #buttons
-pass_generator = Button(text="generate password", command=password_generator)
+pass_generator = Button(text="generate password", command=password_generator, width=14)
 pass_generator.grid(column=2, row=3)
-add = Button(text="add", width=30, command=save_password)
+add = Button(text="add", width=41, command=save_password)
 add.grid(column=1, row=4, columnspan=2)
+search_button = Button(text="Search", width=14, command=search)
+search_button.grid(column=2, row=1)
 
 window.mainloop()
