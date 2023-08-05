@@ -65,7 +65,7 @@ def search():
     else:
         email = new_data["email"]
         password = new_data["password"]
-        messagebox.askyesno(title=website, message=f"Email:{email}\nPassword:{password}")
+        messagebox.showinfo(title=website, message=f"Email:{email}\nPassword:{password}")
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Generator")
