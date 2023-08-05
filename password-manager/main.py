@@ -61,7 +61,7 @@ def search():
             data = json.load(data_file)
             new_data = data[website]
     except KeyError:
-        messagebox.showinfo(title="Error",message="Data file not found!")
+        messagebox.showinfo(title="Error",message=f"The details of {website} doesn't exists!")
     else:
         email = new_data["email"]
         password = new_data["password"]
