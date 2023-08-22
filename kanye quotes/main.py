@@ -7,6 +7,8 @@ import requests
 def kanye_quotes():
     # Send a GET request to the Kanye West quotes API
     response = requests.get(url="https://api.kanye.rest")
+    #HTTPError if the HTTP request returned an unsuccessful status code
+    response.raise_for_status()
     # Extract the quote from the JSON response
     data = response.json()['quote']
     # Update the text of the 'quotes' Canvas item with the fetched quote
