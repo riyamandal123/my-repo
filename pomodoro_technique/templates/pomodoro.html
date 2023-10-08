@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Add your CSS file -->
+  </head>
+
+  <body>
+    <div class="timer-container">
+      <h1 id="timer-label">TIMER</h1>
+      <div class="timer" id="timer">25:00</div>
+      <div class="checkbox" id="checkbox"></div>
+      <button class="start-button" id="start-button">Start</button>
+      <button class="reset-button" id="reset-button">Reset</button>
+    </div>
+
+    <div class="motivational-quotes">
+      <!-- Motivational quotes will be displayed here -->
+    </div>
+
+    <script>
+      // JavaScript code for the Pomodoro Timer
+const PINK = "#e2979c";
+const RED = "#e7305b";
+const GREEN = "#9bdeac";
+const FONT_NAME = "Courier";
+const WORK_MIN = 25;
+const SHORT_BREAK_MIN = 5;
+const LONG_BREAK_MIN = 20;
+
+let reps = 0;
+let timer = null;
+let remainingTime = WORK_MIN * 60; // Initial remaining time, set to work session
+let timerLabel = document.getElementById("timer-label");
+
+const timerDisplay = document.getElementById("timer");
+const checkboxLabel = document.getElementById("checkbox");
+const startButton = document.getElementById("start-button");
+const resetButton = document.getElementById("reset-button");
+
+function resetTimer() {
+  clearInterval(timer);
+  timerDisplay.textContent = "00:00";
+  timerLabel.textContent = "TIMER";
+  checkboxLabel.textContent = "";
+  reps = 0;
+  remainingTime = WORK_MIN * 60; // Reset remaining time to work session
+  startButton.disabled = false; // Enable the Start button
+}
+
+function startTimer() {
+  reps++;
+  const workSec = WORK_MIN * 60;
+  const shortBreakSec = SHORT_BREAK_MIN * 60;
+  const longBreakSec = LONG_BREAK_MIN * 60;
+
+  // Check the session type before updating the timer label
+  if (reps % 2 !== 0) {
+    timerLabel.textContent = "STUDY";
+    remainingTime = workSec;
+  } else if (reps % 8 === 0) {
+    timerLabel.textContent = "LONG BREAK";
+    remainingTime = longBreakSec;
+  } else {
+    timerLabel.textContent = "SHORT BREAK";
+    remainingTime = shortBreakSec;
+  }
+
+  timer = setInterval(function () {
+    if (remainingTime <= 0) {
+      clearInterval(timer);
+      // Timer is done, play a sound, mark sessions, etc. (as in your code)
+    } else {
+      remainingTime--;
+      updateTimerDisplay();
+    }
+  }, 1000);
+
+  startButton.disabled = true; // Disable the Start button when the timer starts
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
+  const formattedTime = `${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  timerDisplay.textContent = formattedTime;
+}
+
+startButton.addEventListener("click", function () {
+  if (!timer || remainingTime <= 0) {
+    startTimer();
+  }
+});
+
+resetButton.addEventListener("click", function () {
+  resetTimer();
+  refreshPage(); // Refresh the page when the "Reset" button is pressed
+});
+// Function to refresh the page
+function refreshPage() {
+  window.location.reload();
+}
+
+// Initial setup
+updateTimerDisplay();
+
+// Define your motivational quotes array
+const motivationalQuotes = [
+  {
+    quote:
+      "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+    author: "Winston Churchill",
+  },
+  {
+    quote: "Believe you can and you're halfway there.",
+    author: "Theodore Roosevelt",
+  },
+  {
+    quote: "Don't watch the clock; do what it does. Keep going.",
+    author: "Sam Levenson",
+  },
+  {
+    quote: "The only way to do great work is to love what you do.",
+    author: "Steve Jobs",
+  },
+  {
+    quote:
+      "What you get by achieving your goals is not as important as what you become by achieving your goals.",
+    author: "Zig Ziglar",
+  },
+  {
+    quote:
+      "The only limit to our realization of tomorrow will be our doubts of today.",
+    author: "Franklin D. Roosevelt",
+  },
+  {
+    quote:
+      "You don't have to be great to start, but you have to start to be great.",
+    author: "Zig Ziglar",
+  },
+];
+
+function displayRandomQuote() {
+  const randomIndex = Math.floor(
+    Math.random() * motivationalQuotes.length
+  );
+  const randomQuote = motivationalQuotes[randomIndex];
+  const quoteElement = document.createElement("div");
+  quoteElement.textContent = `"${randomQuote.quote}" - ${randomQuote.author}`;
+  const motivationalQuotesContainer = document.querySelector(
+    ".motivational-quotes"
+  );
+  motivationalQuotesContainer.innerHTML = ""; // Clear previous quotes
+  motivationalQuotesContainer.appendChild(quoteElement);
+}
+
+// Display a random quote initially
+displayRandomQuote();
+
+// Reload a new random quote every 1 minute
+setInterval(displayRandomQuote, 60000);
+
+    </script>
+  </body>
+</html>

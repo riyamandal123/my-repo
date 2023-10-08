@@ -1,0 +1,70 @@
+body {
+    background-image: url('background.jpg'); /* Add your background image */
+    background-size: cover;
+    font-family: 'Courier', monospace;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+}
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 40px;
+}
+
+#timer-label {
+    font-size: 2rem;
+    color: #9bdeac;
+    margin-bottom: 1rem;
+}
+
+.timer {
+    font-size: 3rem;
+    color: #e2979c;
+    margin-bottom: 1rem;
+}
+
+.checkbox {
+    font-size: 1.5rem;
+    color: #e7305b;
+    margin-bottom: 1rem;
+}
+
+.start-button, .reset-button {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.start-button {
+    background-color: #9bdeac;
+    color: #fff;
+}
+
+.reset-button {
+    background-color: #e7305b;
+    color: #fff;
+}
+
+.start-button:hover, .reset-button:hover {
+    opacity: 0.8;
+}
+.motivational-quotes {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background for readability */
+  }
